@@ -1,0 +1,70 @@
+1. **Data Parsing and Aggregation:**
+    * Read the contaminant and ecological community data from the CSV files.
+    * Parse the data, ensuring that any inconsistencies, missing values, or anomalies are handled.
+    * Aggregate data so that it can be efficiently analyzed. This might involve merging data by date and location, calculating averages, or creating summarized tables.
+
+2. **Calculation of Diversity Indexes:**
+    * For each ecological community data set, calculate a diversity index (e.g., Shannon index, Simpson’s diversity index) over time.
+    * Visualize the diversity indexes on a timeline for each location.
+
+3. **Relate Contaminant Data to Diversity Indexes:**
+    * Analyze the relationship between contaminant levels and the diversity indexes. 
+    * Look for correlations, trends, or patterns that might suggest that certain contaminants have significant impacts on ecological diversity.
+
+#1. Start by creating a function to read and organize the contaminants data. your function should receive as an argument the a path to a directory containing the contamination data. It should then read these files (the `dir()` function can help to find the correct files) and merge them into a single data.frame. The function should return a data.frame with the following columns: `Date`, `Mercury`, `Lead`, and `Location`.
+#2. With all the contaminants data in a single data.frame, **summarize** this data set by calculating the average concentration per month (That is, the average in 2010-01, 2010-02, ...) for each of the two contaminants.
+#3. Load the species count data into R, wrangle it however you see fit, there are several possibilities. You may use the data in the format it is in or modify it using the tidy data principles.
+#4. Next, modify the `Simpson()` and `Shannon()` diversity index functions we built in class to handle the data in the format you created in the previous step. Calculate the diversity index for each observation of the two communities.
+#5. Finally, join the two datasets (diversity measures and average contaminants) into a single data.frame.  (Hint: use one of the join functions)
+#6. Using this combined data set make plots, measure correlations, and look for patterns. For example: How do the contaminants behave in both locations? How does diversity change across time and locations? Are the two related? (Hint: see the first precept for a simple scatter plot code, and see the `cor()` function)
+#7. Write a single paragraph that summarizes your conclusions.
+
+# This function reads and organizes the contaminants data in a single 
+# data.frame by receiving a path to a directory containing the data 
+# as an argument
+```{r}
+
+
+```
+
+# Summarizes the data set by calculating the average concentration 
+# per month
+
+```{r}
+
+
+```
+
+# Loads the species count data and wrangles it 
+
+```{r}
+
+
+```
+
+
+# Calculate the diversity index for each 
+# observation of the two communities.
+```{r}
+
+
+```
+
+# Joins the two datasets into a single dataframe
+```{r}
+
+
+```
+# Plots this data
+```{r}
+
+
+```
+# Measure Correlations
+```{r}
+
+
+```
+# Observations of patterns
+
+# Conclusions
