@@ -62,7 +62,7 @@ all_contaminants_df <- function(directory_path) {
 }
 
 # Relative Path since the files are contained within the same folder
-# directory_path <- "contaminants"
+directory_path <- "contaminants"
 contaminants <- all_contaminants_df(directory_path)
 contaminants
 
@@ -72,7 +72,21 @@ contaminants
 # per month
 
 ```{r}
+library(stringr)
 
+# Generates a new column called months using REGEX to extract dates
+contaminants$month <- format(as.Date(contaminants$Date, format = "%Y-%m-%d"), "%m")
+
+# Generates a new data frame containing the average mercy and 
+# lead concentrations 
+avg_monthly_concentration <- contaminants %>% 
+    group_by(month) %>% 
+    summarise(
+        avg_mercury_concentration = mean(Mercury, na.rm = TRUE),
+        avg_lead_concentration = mean(Lead, na.rm = TRUE)
+    )
+
+avg_monthly_concentration
 
 ```
 
