@@ -11,7 +11,15 @@
     * Analyze the relationship between contaminant levels and the diversity indexes. 
     * Look for correlations, trends, or patterns that might suggest that certain contaminants have significant impacts on ecological diversity.
 
-#1. Start by creating a function to read and organize the contaminants data. your function should receive as an argument the a path to a directory containing the contamination data. It should then read these files (the `dir()` function can help to find the correct files) and merge them into a single data.frame. The function should return a data.frame with the following columns: `Date`, `Mercury`, `Lead`, and `Location`.
+# 1. Start by creating a function to read and organize the 
+# contaminants data. your function should receive as an argument 
+# the a path to a directory containing the contamination data. 
+# It should then read these files (the `dir()` function can help 
+# to find the correct files) and merge them into a single data.frame. 
+# The function should return a data.frame with the following columns: 
+# `Date`, `Mercury`, `Lead`, and `Location`.
+
+
 #2. With all the contaminants data in a single data.frame, **summarize** this data set by calculating the average concentration per month (That is, the average in 2010-01, 2010-02, ...) for each of the two contaminants.
 #3. Load the species count data into R, wrangle it however you see fit, there are several possibilities. You may use the data in the format it is in or modify it using the tidy data principles.
 #4. Next, modify the `Simpson()` and `Shannon()` diversity index functions we built in class to handle the data in the format you created in the previous step. Calculate the diversity index for each observation of the two communities.
@@ -22,8 +30,41 @@
 # This function reads and organizes the contaminants data in a single 
 # data.frame by receiving a path to a directory containing the data 
 # as an argument
-```{r}
 
+# Use dir to read in the files to therefore create the dataframes and then combine the data frames into one
+```{r}
+library(tidyverse)
+
+# Function that takes in a directory path and returns a data frame 
+# containing all information in the csv files in that path
+# more specifically using date, mercury, lead, and location as the 
+# headers
+
+all_contaminants_df <- function(directory_path) {
+    # Stores the files in a list
+    files <- dir(directory_path, pattern = ".*csv", full.names = TRUE)
+
+    # Creates an empty Data Frame
+    contaminants_df <- data.frame(
+        Date = character(),
+        Mercury = numeric(),
+        Lead = numeric(),
+        Location = numeric()
+    )
+
+    # Reads the files
+    for (file in files) {
+        df <- read.csv(file) 
+        # Appends the information in each file into the df
+        contaminants_df <- rbind(contaminants_df, df)
+    }
+    return(contaminants_df)
+}
+
+# Relative Path since the files are contained within the same folder
+# directory_path <- "contaminants"
+contaminants <- all_contaminants_df(directory_path)
+contaminants
 
 ```
 
