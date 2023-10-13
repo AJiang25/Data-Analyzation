@@ -127,7 +127,8 @@ diversity
 # average contaminants) into a single data.frame.  
 # (Hint: use one of the join functions)
 ```{r}
-combined <- left_join(diversity, avg_monthly_concentration, by = "Month")
+combined <- left_join(diversity, avg_monthly_concentration, by = "Month") %>% 
+    arrange(Month)
 combined
 
 ```
@@ -142,12 +143,145 @@ combined
 
 # Plots this data
 ```{r}
+library(dplyr)
+library(ggplot2)
 
+Month <- combined$Month
+Simpson_Indexes <- combined$Simpson
+Shannon_Indexes <- combined$Shannon
+Location <- combined$Location
+Lead <- combined$avg_lead_concentration
+Mercury <- combined$avg_mercury_concentration
+
+
+# 2 plots: ggplot & barplot representing Simpson Index vs Time (Months)
+# ggplot separated by location
+simpson_ggplot <- ggplot(
+    data = combined, 
+        aes(
+            x = Month, 
+            y = Simpson,
+            fill = Location
+        )
+    ) + geom_col(width = 0.5) +
+    theme(axis.text.x = element_text(angle = 90))
+
+# barplot representing Simpson Index vs Time
+barplot(combined$Simpson,
+    names.arg = combined$Month,
+    xlab = "Month", ylab = "Simpson",
+    main = "Bar Plot of Month vs. Simpson",
+    col=rgb(0.2,0.4,0.6,0.6),
+)   
+
+# A scatterplot representing the Simpson indexes, but separated
+# by location, (wasn't able to draw a trend line) 
+simpson_scatter <- ggplot(
+    data = combined, 
+        aes(
+            x = Month, 
+            y = Simpson,
+            fill = Location
+        )
+    ) + theme(axis.text.x = element_text(angle = 90)) +
+    geom_point(aes(colour=Location)) + 
+    geom_smooth(method = "lm", formula = y ~ x) +
+    facet_wrap(~ Location, ncol = 1)
+simpson_scatter
+
+# 2 plots: ggplot & barplot representing Shannon Index vs Time (Months)
+# ggplot separates by location
+shannon_ggplot <- ggplot(
+    data = combined, 
+        aes(
+            x = Month, 
+            y = Shannon,
+            fill = Location
+        )
+    ) + geom_col(width = 0.5) +
+    theme(axis.text.x = element_text(angle = 90))
+
+# barplot representing Simpson Index vs Time
+barplot(combined$Shannon,
+    names.arg = combined$Month,
+    xlab = "Month", ylab = "Shannon",
+    main = "Bar Plot of Month vs. Shannon",
+    col=rgb(0.2,0.4,0.6,0.6),
+)  
+
+# A scatterplot representing the shannon indexes, but separated
+# by location, (wasn't able to draw a trend line)
+shannon_scatter <- ggplot(
+    data = combined, 
+        aes(
+            x = Month, 
+            y = Shannon,
+            fill = Location
+        )
+    ) + theme(axis.text.x = element_text(angle = 90)) +
+    geom_point(aes(colour=Location)) + 
+    facet_wrap(~ Location, ncol = 1)
+shannon_scatter
+
+
+# Analyzing contaminants by Location
+# A scatterplot representing the lead concentrations 
+# in each location over time
+lead <- ggplot(
+    data = combined, 
+        aes(
+            x = Month,
+            y = Lead,
+            fill = Location
+        )
+    ) + theme(axis.text.x = element_text(angle = 90)) +
+    geom_point(aes(colour=Location)) + 
+    facet_wrap(~ Location, ncol = 1)
+
+# A scatterplot representing the lead concentrations 
+# in each location over time
+mercury <- ggplot(
+    data = combined, 
+        aes(
+            x = Month,
+            y = Mercury,
+            fill = Location
+        )
+    ) + theme(axis.text.x = element_text(angle = 90)) +
+    geom_point(aes(colour=Location)) + 
+    facet_wrap(~ Location, ncol = 1)
 
 ```
 # Measure Correlations
 ```{r}
 
+# For River location
+river_data <- subset(combined, Location == "River")
+simpson_cor_river <- cor(river_data$Simpson, c(1:30))
+simpson_cor_river
+
+shannon_cor_river <- cor(river_data$Shannon, c(1:30))
+shannon_cor_river
+
+lead_cor_river <- cor(river_data$avg_lead_concentration, c(1:30))
+lead_cor_river
+
+mercury_cor_river <- cor(river_data$avg_mercury_concentration, c(1:30))
+mercury_cor_river
+
+# For Lake location
+lake_data <- subset(combined, Location == "Lake")
+simpson_cor_lake <- cor(lake_data$Simpson, c(1:30))
+simpson_cor_lake
+
+shannon_cor_lake <- cor(lake_data$Shannon, c(1:30))
+shannon_cor_lake
+
+lead_cor_lake <- cor(lake_data$avg_lead_concentration, c(1:30))
+lead_cor_lake
+
+mercury_cor_lake <- cor(lake_data$avg_mercury_concentration, c(1:30))
+mercury_cor_lake
 
 ```
 # Observations of patterns
