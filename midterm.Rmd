@@ -255,33 +255,47 @@ mercury <- ggplot(
 # Measure Correlations
 ```{r}
 
+correlations <- data.frame(Location = character(),
+                           Simpson = numeric(),
+                           Shannon = numeric(),
+                           Lead = numeric(),
+                           Mercury = numeric())
+
 # For River location
 river_data <- subset(combined, Location == "River")
 simpson_cor_river <- cor(river_data$Simpson, c(1:30))
-simpson_cor_river
-
 shannon_cor_river <- cor(river_data$Shannon, c(1:30))
-shannon_cor_river
-
 lead_cor_river <- cor(river_data$avg_lead_concentration, c(1:30))
-lead_cor_river
-
 mercury_cor_river <- cor(river_data$avg_mercury_concentration, c(1:30))
-mercury_cor_river
+
+correlations <- rbind(correlations, 
+    data.frame(
+        Location = "River",
+        Simpson = simpson_cor_river,
+        Shannon = shannon_cor_river,
+        Lead = lead_cor_river,
+        Mercury = mercury_cor_river
+        )
+    )
 
 # For Lake location
 lake_data <- subset(combined, Location == "Lake")
 simpson_cor_lake <- cor(lake_data$Simpson, c(1:30))
-simpson_cor_lake
-
 shannon_cor_lake <- cor(lake_data$Shannon, c(1:30))
-shannon_cor_lake
-
 lead_cor_lake <- cor(lake_data$avg_lead_concentration, c(1:30))
-lead_cor_lake
-
 mercury_cor_lake <- cor(lake_data$avg_mercury_concentration, c(1:30))
-mercury_cor_lake
+
+correlations <- rbind(correlations, 
+    data.frame(
+        Location = "Lake",
+        Simpson = simpson_cor_lake,
+        Shannon = shannon_cor_lake,
+        Lead = lead_cor_lake,
+        Mercury = mercury_cor_lake
+        )
+    )
+
+correlations
 
 ```
 # Observations of patterns
@@ -289,9 +303,20 @@ mercury_cor_lake
 # 7. Write a single paragraph that summarizes your conclusions.
 
 # Conclusions:
-#
-#
-#
-#
-#
-#
+# Based on the graphs and correlations, it seems that both
+# mercury and lead concentrations in each location have a
+# positive correlation over time, meaning that their average 
+# monthly concentrations are increasing in each location. 
+# With respect to this, the simpson diversity index has 
+# a positive correlation with respect to time with the lake location
+# having a much higher correlation than that of the river location.
+# From the graphs, we can see that the Simpson indexes increase over
+# time meaning that the probability that two individuals sampled from 
+# the same population will be from the same species is higher.
+# The Shannon indexes hold a negative correlation and the scatterplots
+# show that the indexes decrease over time. This indicates that 
+# the diversity in each location in decreasing. The likely
+# conclusion from this data is that as the mercury and lead
+# concentrations increase in each community over time is correlated
+# with the diversity of the species in each community decrease 
+# over time
