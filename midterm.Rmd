@@ -85,7 +85,12 @@ avg_monthly_concentration
 # in the format it is in or modify it using the tidy data principles. 
 
 ```{r}
+library(readr)
 
+# Regular Table with an additional column called total 
+# containing the observation total 
+species <- read.table("species_counts.csv", header = TRUE, sep = ",")
+species
 
 ```
 
