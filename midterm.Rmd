@@ -127,7 +127,8 @@ diversity
 # average contaminants) into a single data.frame.  
 # (Hint: use one of the join functions)
 ```{r}
-
+combined <- left_join(diversity, avg_monthly_concentration, by = "Month")
+combined
 
 ```
 
