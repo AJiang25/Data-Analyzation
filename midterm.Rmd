@@ -100,7 +100,26 @@ species
 # each observation of the two communities.
 
 ```{r}
+getProb = function(x, na.rm = FALSE) {
+    x/sum(x, na.rm = TRUE)
+}
 
+Simpson <- function(x, na.rm = FALSE){
+  p = getProb(x)
+  D = sum(p^2, na.rm = TRUE)
+  return(c(Simpson = D))
+}
+
+Shannon <- function(x, na.rm = FALSE){
+  p = getProb(x)
+  H = -sum(p*log(p), na.rm = TRUE)
+  return(c(Shannon = H))
+}
+
+diversity <- subset(species[,1:2]) %>% 
+    mutate(Simpson = apply(species[,3:12], 1, Simpson)) %>% 
+    mutate(Shannon = apply(species[,3:12], 1, Shannon))
+diversity
 
 ```
 
