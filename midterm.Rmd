@@ -11,13 +11,13 @@
     * Analyze the relationship between contaminant levels and the diversity indexes. 
     * Look for correlations, trends, or patterns that might suggest that certain contaminants have significant impacts on ecological diversity.
 
-# 1. Start by creating a function to read and organize the 
-# contaminants data. your function should receive as an argument 
-# the a path to a directory containing the contamination data. 
-# It should then read these files (the `dir()` function can help 
-# to find the correct files) and merge them into a single data.frame. 
-# The function should return a data.frame with the following columns: 
-# `Date`, `Mercury`, `Lead`, and `Location`.
+1. Start by creating a function to read and organize the 
+contaminants data. your function should receive as an argument 
+the a path to a directory containing the contamination data. 
+It should then read these files (the `dir()` function can help 
+to find the correct files) and merge them into a single data.frame. 
+The function should return a data.frame with the following columns: 
+`Date`, `Mercury`, `Lead`, and `Location`.
 
 ```{r}
 library(tidyverse)
@@ -56,10 +56,10 @@ contaminants
 ```
 
 
-# 2. With all the contaminants data in a single data.frame, 
-# **summarize** this data set by calculating the average concentration 
-# per month (That is, the average in 2010-01, 2010-02, ...) 
-# for each of the two contaminants.
+2. With all the contaminants data in a single data.frame, 
+**summarize** this data set by calculating the average concentration 
+per month (That is, the average in 2010-01, 2010-02, ...) 
+for each of the two contaminants.
 
 ```{r}
 library(stringr)
@@ -70,7 +70,7 @@ contaminants$Month <- format(as.Date(contaminants$Date, format = "%Y-%m-%d"), "%
 # Generates a new data frame containing the average mercy and 
 # lead concentrations 
 avg_monthly_concentration <- contaminants %>% 
-    group_by(Month) %>% 
+    group_by(Month, Location) %>% 
     summarise(
         avg_mercury_concentration = mean(Mercury, na.rm = TRUE),
         avg_lead_concentration = mean(Lead, na.rm = TRUE)
@@ -80,9 +80,9 @@ avg_monthly_concentration
 
 ```
 
-# 3. Load the species count data into R, wrangle it however 
-# you see fit, there are several possibilities. You may use the data 
-# in the format it is in or modify it using the tidy data principles. 
+3. Load the species count data into R, wrangle it however 
+you see fit, there are several possibilities. You may use the data 
+in the format it is in or modify it using the tidy data principles. 
 
 ```{r}
 library(readr)
@@ -123,25 +123,24 @@ diversity
 
 ```
 
-# 5. Finally, join the two datasets (diversity measures and 
-# average contaminants) into a single data.frame.  
-# (Hint: use one of the join functions)
+5. Finally, join the two datasets (diversity measures and 
+average contaminants) into a single data.frame.  
+(Hint: use one of the join functions)
 ```{r}
-combined <- left_join(diversity, avg_monthly_concentration, by = "Month") %>% 
-    arrange(Month)
+combined <- left_join(diversity, avg_monthly_concentration, by = c("Month", "Location")) %>%
+    arrange(Month, Location)
 combined
 
 ```
 
-# 6. Using this combined data set make plots, measure correlations, 
-# and look for patterns. For example: 
-# How do the contaminants behave in both locations? 
-# How does diversity change across time and locations? 
-# Are the two related? 
-# (Hint: see the first precept for a simple scatter plot code, 
-# and see the `cor()` function)
+6. Using this combined data set make plots, measure correlations, 
+and look for patterns. For example: 
+How do the contaminants behave in both locations? 
+How does diversity change across time and locations? 
+Are the two related? 
+(Hint: see the first precept for a simple scatter plot code, 
+and see the `cor()` function)
 
-# Plots this data
 ```{r}
 library(dplyr)
 library(ggplot2)
@@ -298,25 +297,25 @@ correlations <- rbind(correlations,
 correlations
 
 ```
-# Observations of patterns
+Observations of patterns
 
-# 7. Write a single paragraph that summarizes your conclusions.
+7. Write a single paragraph that summarizes your conclusions.
 
-# Conclusions:
-# Based on the graphs and correlations, it seems that both
-# mercury and lead concentrations in each location have a
-# positive correlation over time, meaning that their average 
-# monthly concentrations are increasing in each location. 
-# With respect to this, the simpson diversity index has 
-# a positive correlation with respect to time with the lake location
-# having a much higher correlation than that of the river location.
-# From the graphs, we can see that the Simpson indexes increase over
-# time meaning that the probability that two individuals sampled from 
-# the same population will be from the same species is higher.
-# The Shannon indexes hold a negative correlation and the scatterplots
-# show that the indexes decrease over time. This indicates that 
-# the diversity in each location in decreasing. The likely
-# conclusion from this data is that as the mercury and lead
-# concentrations increase in each community over time is correlated
-# with the diversity of the species in each community decrease 
-# over time
+Conclusions:
+Based on the graphs and correlations, it seems that both
+mercury and lead concentrations in each location have a
+positive correlation over time, meaning that their average 
+monthly concentrations are increasing in each location. 
+With respect to this, the simpson diversity index has 
+a positive correlation with respect to time with the lake location
+having a much higher correlation than that of the river location.
+From the graphs, we can see that the Simpson indexes increase over
+time meaning that the probability that two individuals sampled from 
+the same population will be from the same species is higher.
+The Shannon indexes hold a negative correlation and the scatterplots
+show that the indexes decrease over time. This indicates that 
+the diversity in each location in decreasing. The likely
+conclusion from this data is that as the mercury and lead
+concentrations increase in each community over time is correlated
+with the diversity of the species in each community decrease 
+over time
